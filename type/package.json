@@ -1,0 +1,11 @@
+{
+    "name": "@digital-nomad-home/data-service",
+    "version": "1.2.0",
+    "types": "index.d.ts",
+    "dependencies": {
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/koa": "^3.0.1",
+        "mobx-github": "^0.6.2",
+        "mobx-restful": "^2.1.4"
+    }
+}

@@ -1,0 +1,125 @@
+{
+    "name": "@digital-nomad-home/data-service",
+    "version": "1.2.0",
+    "license": "LGPL-3.0",
+    "author": "shiy2008@gmail.com",
+    "description": "RESTful API service scaffold based on Node.js & TypeScript",
+    "homepage": "https://github.com/digital-nomad-home/data-service#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/digital-nomad-home/data-service.git"
+    },
+    "bugs": {
+        "url": "https://github.com/digital-nomad-home/data-service/issues"
+    },
+    "source": "source/index.ts",
+    "main": "dist/index.js",
+    "engines": {
+        "node": ">=22"
+    },
+    "dependencies": {
+        "@aws-sdk/client-s3": "^3.1025.0",
+        "@aws-sdk/s3-request-presigner": "^3.1025.0",
+        "@koa/cors": "^5.0.0",
+        "@koa/multer": "^4.0.0",
+        "@koa/router": "^15.4.0",
+        "@passwordless-id/webauthn": "^2.3.5",
+        "@smithy/smithy-client": "^4.12.9",
+        "@supabase/auth-js": "^2.101.1",
+        "@supabase/supabase-js": "^2.101.1",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.15.1",
+        "cross-env": "^10.1.0",
+        "dotenv": "^17.4.1",
+        "jsonwebtoken": "^9.0.3",
+        "koa": "^3.2.0",
+        "koa-bodyparser": "^4.4.1",
+        "koa-jwt": "^4.0.4",
+        "koa-logger": "^4.0.0",
+        "koa-mount": "^4.2.0",
+        "koa2-swagger-ui": "^5.12.0",
+        "koagger": "^0.4.0",
+        "marked": "^17.0.6",
+        "mobx-github": "^0.6.2",
+        "mobx-restful": "^2.1.4",
+        "pg": "^8.20.0",
+        "reflect-metadata": "^0.2.2",
+        "routing-controllers": "^0.11.3",
+        "routing-controllers-openapi": "^5.0.1",
+        "tslib": "^2.8.1",
+        "typeorm": "^0.3.28",
+        "undici": "^8.0.2",
+        "web-utility": "^4.6.5"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@octokit/openapi-types": "^27.0.0",
+        "@types/eslint-config-prettier": "^6.11.3",
+        "@types/jest": "^29.5.14",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/koa": "^3.0.2",
+        "@types/koa-logger": "^3.1.5",
+        "@types/node": "^24.12.2",
+        "better-sqlite3": "^12.8.0",
+        "eslint": "^10.2.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-simple-import-sort": "^13.0.0",
+        "globals": "^17.4.0",
+        "husky": "^9.1.7",
+        "jest": "^29.7.0",
+        "jiti": "^2.6.1",
+        "koajax": "^3.3.0",
+        "lint-staged": "^16.4.0",
+        "prettier": "^3.8.1",
+        "start-server-and-test": "^3.0.0",
+        "swagger-typescript-api": "^13.6.7",
+        "ts-jest": "^29.4.9",
+        "ts-node": "^10.9.2",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "^8.58.0"
+    },
+    "resolutions": {
+        "reflect-metadata": "$reflect-metadata",
+        "koa": "$koa"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "better-sqlite3"
+        ]
+    },
+    "prettier": {
+        "singleQuote": true,
+        "trailingComma": "none",
+        "arrowParens": "avoid",
+        "tabWidth": 4,
+        "printWidth": 100
+    },
+    "lint-staged": {
+        "*.{md,json,yml,ts}": "prettier --write",
+        "*.ts": "eslint --fix"
+    },
+    "jest": {
+        "preset": "ts-jest"
+    },
+    "scripts": {
+        "install": "cp -u .env.example .env  ||  true",
+        "prepare": "husky || true",
+        "dev": "cross-env TS_NODE_TRANSPILE_ONLY=true  node -r ts-node/register --watch source/",
+        "lint": "lint-staged",
+        "build-test": "swagger-typescript-api generate -p http://localhost:8080/docs/spec -o test/ -n client.ts",
+        "start-test": "rm -rf .data/  &&  node dist/",
+        "jest": "jest",
+        "debug": "server-test start-test 8080 jest",
+        "test": "npm run build  &&  server-test start-test 8080 build-test  &&  npm run debug",
+        "pack-type": "tsc --emitDeclarationOnly --outDir type/  &&  cd type/  &&  rm -f *.d.ts  &&  cp -rf model/* .  &&  rm -rf model/ service/ controller/",
+        "build": "rm -rf dist/ type/*.d.ts  &&  tsc  &&  npm run pack-type",
+        "start": "cross-env NODE_ENV=production  node dist/",
+        "typeorm": "typeorm-ts-node-commonjs -d source/model/index.ts",
+        "migration:generate": "npm run typeorm -- migration:generate",
+        "migration:run": "npm run typeorm -- migration:run",
+        "upgrade:dev": "npm run migration:generate -- migration/version  &&  npm run migration:run",
+        "upgrade:pro": "cross-env NODE_ENV=production  npm run migration:generate -- .data/version  &&  npm run migration:run",
+        "pack-image": "docker build -t digital-nomad-home/data-service:latest .",
+        "container": "docker rm -f data-service  &&  docker run --name data-service -p 8080:8080 -d digital-nomad-home/data-service:latest"
+    }
+}
