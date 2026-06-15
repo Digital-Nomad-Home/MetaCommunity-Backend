@@ -8,6 +8,7 @@ import { UserCredential } from './WebAuthn';
 
 export * from './ActivityLog';
 export * from './Base';
+export * from './Contract';
 export * from './File';
 export * from './OAuth';
 export * from './User';
