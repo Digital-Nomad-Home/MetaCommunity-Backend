@@ -30,6 +30,7 @@
     - recommend to use with [Passwordless ID][17]
 5. [Activity logging](source/controller/ActivityLog.ts)
 6. [File object storage](source/controller/File.ts)
+7. [Smart contract JSON-RPC calls](source/controller/Contract.ts)
 
 ## Best practice
 
@@ -67,6 +68,7 @@
 |   `AWS_S3_ACCESS_KEY_ID`   |     AWS S3 access key id     |
 | `AWS_S3_SECRET_ACCESS_KEY` |   AWS S3 secret access key   |
 |    `AWS_S3_PUBLIC_HOST`    |      AWS S3 public host      |
+|     `BLOCKCHAIN_RPC_URL`    | Default EVM JSON-RPC endpoint |
 
 ## Development
 
