@@ -21,7 +21,8 @@ export const {
     AWS_S3_BUCKET,
     AWS_S3_ACCESS_KEY_ID,
     AWS_S3_SECRET_ACCESS_KEY,
-    AWS_S3_PUBLIC_HOST
+    AWS_S3_PUBLIC_HOST,
+    BLOCKCHAIN_RPC_URL
 } = process.env;
 
 export type NoEmptyFields<T> = {
