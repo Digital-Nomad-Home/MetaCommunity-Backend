@@ -4,6 +4,7 @@ import { createAPI } from 'koagger';
 import { isProduct } from '../utility';
 import { ActivityLogController } from './ActivityLog';
 import { BaseController } from './Base';
+import { ContractController } from './Contract';
 import { FileController } from './File';
 import { OauthController } from './OAuth';
 import { UserController } from './User';
@@ -11,6 +12,7 @@ import { WebAuthnController } from './WebAuthn';
 
 export * from './ActivityLog';
 export * from './Base';
+export * from './Contract';
 export * from './File';
 export * from './OAuth';
 export * from './User';
@@ -21,6 +23,7 @@ export const controllers = [
     OauthController,
     UserController,
     ActivityLogController,
+    ContractController,
     FileController,
     BaseController
 ];
