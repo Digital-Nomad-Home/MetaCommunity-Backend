@@ -22,7 +22,7 @@ ${isProduct ? '' : `- Mock API served at ${host}/mock/`}
         return '';
     }
 
-    @Get()
+    @Get('/')
     getIndex(@HeaderParam('host') host: string) {
         return marked(BaseController.entryOf(host));
     }
