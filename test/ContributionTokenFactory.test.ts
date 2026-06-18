@@ -2,9 +2,7 @@ import { invokeContract } from '../source/service/ChainMaker';
 
 const { PLATFORM_ADMIN } = process.env;
 
-function decodeValues(result: { data: string }): unknown[] {
-    return JSON.parse(result.data);
-}
+const decodeValues = ({ data }: { data: string }): unknown[] => JSON.parse(data);
 
 describe('ContributionTokenFactory', () => {
     it('should report contract not paused', async () => {
