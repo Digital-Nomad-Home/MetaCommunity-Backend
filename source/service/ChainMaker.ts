@@ -1,4 +1,5 @@
 import { keccak256, toUtf8Bytes } from 'ethers';
+import pThrottle from 'p-throttle';
 import * as tencentcloud from 'tencentcloud-sdk-nodejs-tbaas';
 
 import {
@@ -60,35 +61,44 @@ interface RawContractResult {
 function parseResult(result?: RawContractResult): ContractResult {
     if (!result) throw new Error('TBaaS returned empty result');
 
-    const code = result.Code ?? -1;
+    const { Code, CodeMessage, Message, TxId, GasUsed, Result } = result;
+    const code = Code ?? -1;
 
     if (code !== 0)
-        throw new Error(
-            `Contract invocation failed: [${code}] ${result.CodeMessage}: ${result.Message}`
-        );
+        throw new Error(`Contract invocation failed: [${code}] ${CodeMessage}: ${Message}`);
 
     return {
         code,
-        codeMessage: result.CodeMessage ?? '',
-        txId: result.TxId ?? '',
-        gasUsed: result.GasUsed ?? 0,
-        message: result.Message ?? '',
-        data: result.Result ? Buffer.from(result.Result, 'base64').toString('utf8') : ''
+        codeMessage: CodeMessage ?? '',
+        txId: TxId ?? '',
+        gasUsed: GasUsed ?? 0,
+        message: Message ?? '',
+        data: Result ? Buffer.from(Result, 'base64').toString('utf8') : ''
     };
 }
 
 // TBaaS demo API limits to 1 request per second !!!
-const MIN_INTERVAL_MS = 1100;
-let lastCallTime = 0;
+const throttle = pThrottle({ limit: 1, interval: 1100, strict: true });
 
-async function throttle() {
-    const now = Date.now();
-    const wait = MIN_INTERVAL_MS - (now - lastCallTime);
+const invokeThrottled = throttle(
+    async (
+        contractName: ContractName,
+        funcName: string,
+        funcParam: Record<string, string>,
+        asyncFlag: number
+    ) => {
+        const { Result } = await client.InvokeChainMakerDemoContract({
+            ClusterId: TBAAS_CLUSTER_ID!,
+            ChainId: TBAAS_CHAIN_ID!,
+            ContractName: contractName,
+            FuncName: funcName,
+            FuncParam: JSON.stringify(funcParam),
+            AsyncFlag: asyncFlag
+        });
 
-    if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
-
-    lastCallTime = Date.now();
-}
+        return parseResult(Result);
+    }
+);
 
 export async function invokeContract(
     contractName: ContractName,
@@ -96,20 +106,7 @@ export async function invokeContract(
     funcParam: Record<string, string> = {},
     asyncFlag = 0
 ): Promise<ContractResult> {
-    await throttle();
-
-    const response = await client.InvokeChainMakerDemoContract({
-        ClusterId: TBAAS_CLUSTER_ID!,
-        ChainId: TBAAS_CHAIN_ID!,
-        ContractName: contractName,
-        FuncName: funcName,
-        FuncParam: JSON.stringify(funcParam),
-        AsyncFlag: asyncFlag
-    });
-
-    return parseResult(response.Result);
+    return invokeThrottled(contractName, funcName, funcParam, asyncFlag);
 }
 
-export function hash(value: string): string {
-    return keccak256(toUtf8Bytes(value));
-}
+export const hash = (value: string) => keccak256(toUtf8Bytes(value));
