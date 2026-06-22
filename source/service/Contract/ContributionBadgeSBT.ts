@@ -2,8 +2,9 @@ import { getAddress } from 'ethers';
 
 import { CONTRACT_ADDRESSES, ContractResult, hash, invokeContract } from '../ChainMaker';
 
+export const ADDRESS = CONTRACT_ADDRESSES.ContributionBadgeSBT;
+
 export class ContributionBadgeSBTService {
-    static readonly ADDRESS = CONTRACT_ADDRESSES.ContributionBadgeSBT;
     private readonly NAME = 'ContributionBadgeSBT';
 
     async setBadgeRule(

@@ -9,8 +9,9 @@ export enum RefundMode {
     ReturnReserveAndRefundPublisher = 3
 }
 
+export const ADDRESS = CONTRACT_ADDRESSES.TaskEscrowManager;
+
 export class TaskEscrowManagerService {
-    static readonly ADDRESS = CONTRACT_ADDRESSES.TaskEscrowManager;
     private readonly NAME = 'TaskEscrowManager';
 
     async createTaskEscrow(

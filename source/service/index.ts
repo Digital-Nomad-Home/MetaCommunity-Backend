@@ -1,6 +1,6 @@
 export * from './ActivityLog';
 export * from './Base';
 export * from './ChainMaker';
-export * from './Contracts';
+export * from './Contract';
 export * from './Session';
 export * from './User';

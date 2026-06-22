@@ -8,8 +8,9 @@ export enum IssuerType {
     CoBuildingEnterprise = 3
 }
 
+export const ADDRESS = CONTRACT_ADDRESSES.ContributionTokenFactory;
+
 export class ContributionTokenFactoryService {
-    static readonly ADDRESS = CONTRACT_ADDRESSES.ContributionTokenFactory;
     private readonly NAME = 'ContributionTokenFactory';
 
     async setIssuerApproval(

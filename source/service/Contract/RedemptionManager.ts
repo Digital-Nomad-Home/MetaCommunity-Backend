@@ -2,8 +2,9 @@ import { getAddress } from 'ethers';
 
 import { CONTRACT_ADDRESSES, ContractResult, hash, invokeContract } from '../ChainMaker';
 
+export const ADDRESS = CONTRACT_ADDRESSES.RedemptionManager;
+
 export class RedemptionManagerService {
-    static readonly ADDRESS = CONTRACT_ADDRESSES.RedemptionManager;
     private readonly NAME = 'RedemptionManager';
 
     async setMerchant(merchant: string, approved: boolean): Promise<ContractResult> {
