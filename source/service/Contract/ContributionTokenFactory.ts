@@ -1,6 +1,6 @@
 import { getAddress } from 'ethers';
 
-import { CONTRACT_ADDRESSES, ContractResult, hash, invokeContract } from '../ChainMaker';
+import { CONTRACT_ADDRESSES, hash, invokeContract } from '../ChainMaker';
 
 export enum IssuerType {
     ResidentsCommittee = 1,
@@ -13,120 +13,108 @@ export const ADDRESS = CONTRACT_ADDRESSES.ContributionTokenFactory;
 export class ContributionTokenFactoryService {
     private readonly NAME = 'ContributionTokenFactory';
 
-    async setIssuerApproval(
+    setIssuerApproval(
         issuer: string,
         approved: boolean,
         issuerType: IssuerType,
         orgIdHash: string,
         metadataURI: string
-    ): Promise<ContractResult> {
+    ) {
         return invokeContract(this.NAME, 'setIssuerApproval', {
             issuer: getAddress(issuer),
-            approved: String(approved),
-            issuerType: String(issuerType),
+            approved,
+            issuerType,
             orgIdHash,
             metadataURI
         });
     }
 
-    async createToken(
+    createToken(
         name: string,
         symbol: string,
         cap: bigint,
         issuer: string,
         communityIdHash: string,
         metadataURI: string
-    ): Promise<ContractResult> {
+    ) {
         return invokeContract(this.NAME, 'createToken', {
             name,
             symbol,
-            cap: cap.toString(),
+            cap,
             issuer: getAddress(issuer),
             communityIdHash,
             metadataURI
         });
     }
 
-    async setTokenManager(
-        token: string,
-        manager: string,
-        approved: boolean
-    ): Promise<ContractResult> {
+    setTokenManager(token: string, manager: string, approved: boolean) {
         return invokeContract(this.NAME, 'setTokenManager', {
             token: getAddress(token),
             manager: getAddress(manager),
-            approved: String(approved)
+            approved
         });
     }
 
-    async setTokenRedemptionManager(
-        token: string,
-        redemptionManager: string,
-        approved: boolean
-    ): Promise<ContractResult> {
+    setTokenRedemptionManager(token: string, redemptionManager: string, approved: boolean) {
         return invokeContract(this.NAME, 'setTokenRedemptionManager', {
             token: getAddress(token),
             redemptionManager: getAddress(redemptionManager),
-            approved: String(approved)
+            approved
         });
     }
 
-    async increaseTokenBackedQuota(
-        token: string,
-        amount: bigint,
-        proofHash: string
-    ): Promise<ContractResult> {
+    increaseTokenBackedQuota(token: string, amount: bigint, proofHash: string) {
         return invokeContract(this.NAME, 'increaseTokenBackedQuota', {
             token: getAddress(token),
-            amount: amount.toString(),
+            amount,
             proofHash
         });
     }
 
-    async grantRole(role: string, account: string): Promise<ContractResult> {
+    grantRole(role: string, account: string) {
         return invokeContract(this.NAME, 'grantRole', {
             role: hash(role),
             account: getAddress(account)
         });
     }
 
-    async pause(): Promise<ContractResult> {
+    pause() {
         return invokeContract(this.NAME, 'pause', {});
     }
 
-    async unpause(): Promise<ContractResult> {
+    unpause() {
         return invokeContract(this.NAME, 'unpause', {});
     }
 
-    async certifiedIssuers(issuer: string): Promise<ContractResult> {
+    certifiedIssuers(issuer: string) {
         return invokeContract(this.NAME, 'certifiedIssuers', {
             issuer: getAddress(issuer)
         });
     }
 
-    async registeredTokens(token: string): Promise<ContractResult> {
+    registeredTokens(token: string) {
         return invokeContract(this.NAME, 'registeredTokens', {
             token: getAddress(token)
         });
     }
 
-    async activeTokenByCommunity(communityIdHash: string): Promise<ContractResult> {
+    activeTokenByCommunity(communityIdHash: string) {
         return invokeContract(this.NAME, 'activeTokenByCommunity', { communityIdHash });
     }
 
-    async allTokensLength(): Promise<ContractResult> {
+    allTokensLength() {
         return invokeContract(this.NAME, 'allTokensLength', {});
     }
 
-    async issuers(issuer: string): Promise<ContractResult> {
+    issuers(issuer: string) {
         return invokeContract(this.NAME, 'issuers', { issuer: getAddress(issuer) });
     }
 
-    async tokensByIssuer(issuer: string): Promise<ContractResult> {
+    tokensByIssuer(issuer: string) {
         return invokeContract(this.NAME, 'tokensByIssuer', { issuer: getAddress(issuer) });
     }
 
-    async paused(): Promise<ContractResult> {
+    paused() {
         return invokeContract(this.NAME, 'paused', {});
     }
 }

@@ -1,76 +1,76 @@
 import { getAddress } from 'ethers';
 
-import { ContractResult, hash, invokeContract } from '../ChainMaker';
+import { hash, invokeContract } from '../ChainMaker';
 
 export class ContributionTokenService {
     constructor(private readonly contractName: string) {}
 
-    async increaseBackedQuota(amount: bigint, proofHash: string): Promise<ContractResult> {
+    increaseBackedQuota(amount: bigint, proofHash: string) {
         return invokeContract(this.contractName, 'increaseBackedQuota', {
-            amount: amount.toString(),
+            amount,
             proofHash
         });
     }
 
-    async setBackedQuota(newBackedQuota: bigint, proofHash: string): Promise<ContractResult> {
+    setBackedQuota(newBackedQuota: bigint, proofHash: string) {
         return invokeContract(this.contractName, 'setBackedQuota', {
-            newBackedQuota: newBackedQuota.toString(),
+            newBackedQuota,
             proofHash
         });
     }
 
-    async grantRole(role: string, account: string): Promise<ContractResult> {
+    grantRole(role: string, account: string) {
         return invokeContract(this.contractName, 'grantRole', {
             role: hash(role),
             account: getAddress(account)
         });
     }
 
-    async name(): Promise<ContractResult> {
+    name() {
         return invokeContract(this.contractName, 'name', {});
     }
 
-    async symbol(): Promise<ContractResult> {
+    symbol() {
         return invokeContract(this.contractName, 'symbol', {});
     }
 
-    async decimals(): Promise<ContractResult> {
+    decimals() {
         return invokeContract(this.contractName, 'decimals', {});
     }
 
-    async totalSupply(): Promise<ContractResult> {
+    totalSupply() {
         return invokeContract(this.contractName, 'totalSupply', {});
     }
 
-    async cap(): Promise<ContractResult> {
+    cap() {
         return invokeContract(this.contractName, 'cap', {});
     }
 
-    async backedQuota(): Promise<ContractResult> {
+    backedQuota() {
         return invokeContract(this.contractName, 'backedQuota', {});
     }
 
-    async releasedAmount(): Promise<ContractResult> {
+    releasedAmount() {
         return invokeContract(this.contractName, 'releasedAmount', {});
     }
 
-    async burnedAmount(): Promise<ContractResult> {
+    burnedAmount() {
         return invokeContract(this.contractName, 'burnedAmount', {});
     }
 
-    async balanceOf(addr: string): Promise<ContractResult> {
+    balanceOf(addr: string) {
         return invokeContract(this.contractName, 'balanceOf', {
             addr: getAddress(addr)
         });
     }
 
-    async cumulativeEarned(addr: string): Promise<ContractResult> {
+    cumulativeEarned(addr: string) {
         return invokeContract(this.contractName, 'cumulativeEarned', {
             addr: getAddress(addr)
         });
     }
 
-    async issuer(): Promise<ContractResult> {
+    issuer() {
         return invokeContract(this.contractName, 'issuer', {});
     }
 }

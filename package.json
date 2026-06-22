@@ -105,7 +105,7 @@
         "preset": "ts-jest"
     },
     "scripts": {
-        "install": "cp -u .env.example .env  ||  true",
+        "install": "[ -f .env ]  ||  cp .env.example .env",
         "prepare": "husky || true",
         "dev": "cross-env TS_NODE_TRANSPILE_ONLY=true  node -r ts-node/register --watch source/",
         "lint": "lint-staged",

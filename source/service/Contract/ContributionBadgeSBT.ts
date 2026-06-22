@@ -1,99 +1,99 @@
 import { getAddress } from 'ethers';
 
-import { CONTRACT_ADDRESSES, ContractResult, hash, invokeContract } from '../ChainMaker';
+import { CONTRACT_ADDRESSES, hash, invokeContract } from '../ChainMaker';
 
 export const ADDRESS = CONTRACT_ADDRESSES.ContributionBadgeSBT;
 
 export class ContributionBadgeSBTService {
     private readonly NAME = 'ContributionBadgeSBT';
 
-    async setBadgeRule(
+    setBadgeRule(
         token: string,
         threshold: bigint,
         badgeName: string,
         metadataURI: string,
         active: boolean
-    ): Promise<ContractResult> {
+    ) {
         return invokeContract(this.NAME, 'setBadgeRule', {
             token: getAddress(token),
-            threshold: threshold.toString(),
+            threshold,
             badgeName,
             metadataURI,
-            active: String(active)
+            active
         });
     }
 
-    async claimBadge(token: string, threshold: bigint): Promise<ContractResult> {
+    claimBadge(token: string, threshold: bigint) {
         return invokeContract(this.NAME, 'claimBadge', {
             token: getAddress(token),
-            threshold: threshold.toString()
+            threshold
         });
     }
 
-    async grantRole(role: string, account: string): Promise<ContractResult> {
+    grantRole(role: string, account: string) {
         return invokeContract(this.NAME, 'grantRole', {
             role: hash(role),
             account: getAddress(account)
         });
     }
 
-    async pause(): Promise<ContractResult> {
+    pause() {
         return invokeContract(this.NAME, 'pause', {});
     }
 
-    async unpause(): Promise<ContractResult> {
+    unpause() {
         return invokeContract(this.NAME, 'unpause', {});
     }
 
-    async balanceOf(user: string): Promise<ContractResult> {
+    balanceOf(user: string) {
         return invokeContract(this.NAME, 'balanceOf', { user: getAddress(user) });
     }
 
-    async ownerOf(tokenId: bigint): Promise<ContractResult> {
-        return invokeContract(this.NAME, 'ownerOf', { tokenId: tokenId.toString() });
+    ownerOf(tokenId: bigint) {
+        return invokeContract(this.NAME, 'ownerOf', { tokenId });
     }
 
-    async tokenURI(tokenId: bigint): Promise<ContractResult> {
-        return invokeContract(this.NAME, 'tokenURI', { tokenId: tokenId.toString() });
+    tokenURI(tokenId: bigint) {
+        return invokeContract(this.NAME, 'tokenURI', { tokenId });
     }
 
-    async getBadgeRule(token: string, threshold: bigint): Promise<ContractResult> {
+    getBadgeRule(token: string, threshold: bigint) {
         return invokeContract(this.NAME, 'getBadgeRule', {
             token: getAddress(token),
-            threshold: threshold.toString()
+            threshold
         });
     }
 
-    async thresholdCount(token: string): Promise<ContractResult> {
+    thresholdCount(token: string) {
         return invokeContract(this.NAME, 'thresholdCount', { token: getAddress(token) });
     }
 
-    async thresholdAt(token: string, index: number): Promise<ContractResult> {
+    thresholdAt(token: string, index: number) {
         return invokeContract(this.NAME, 'thresholdAt', {
             token: getAddress(token),
-            index: String(index)
+            index
         });
     }
 
-    async tokenIdOf(token: string, user: string, threshold: bigint): Promise<ContractResult> {
+    tokenIdOf(token: string, user: string, threshold: bigint) {
         return invokeContract(this.NAME, 'tokenIdOf', {
             token: getAddress(token),
             user: getAddress(user),
-            threshold: threshold.toString()
+            threshold
         });
     }
 
-    async setTokenFactory(factoryAddress: string): Promise<ContractResult> {
+    setTokenFactory(factoryAddress: string) {
         return invokeContract(this.NAME, 'setTokenFactory', {
             factoryAddress: getAddress(factoryAddress)
         });
     }
 
-    async locked(tokenId: bigint): Promise<ContractResult> {
-        return invokeContract(this.NAME, 'locked', { tokenId: tokenId.toString() });
+    locked(tokenId: bigint) {
+        return invokeContract(this.NAME, 'locked', { tokenId });
     }
 
-    async paused(): Promise<ContractResult> {
+    paused() {
         return invokeContract(this.NAME, 'paused', {});
     }
 }

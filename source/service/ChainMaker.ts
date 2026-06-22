@@ -49,6 +49,8 @@ export interface ContractResult {
     data: string;
 }
 
+export type ContractParam = string | number | boolean | bigint;
+
 interface RawContractResult {
     Code?: number;
     CodeMessage?: string;
@@ -77,36 +79,31 @@ function parseResult(result?: RawContractResult): ContractResult {
     };
 }
 
-// TBaaS demo API limits to 1 request per second !!!
-const throttle = pThrottle({ limit: 1, interval: 1100, strict: true });
+function toParams(params: Record<string, ContractParam>): Record<string, string> {
+    return Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
+}
 
-const invokeThrottled = throttle(
+// TBaaS demo API limits to 1 request per second !!!
+const throttle = pThrottle({ limit: 1, interval: 1500, strict: true });
+
+export const invokeContract = throttle(
     async (
         contractName: ContractName,
         funcName: string,
-        funcParam: Record<string, string>,
-        asyncFlag: number
-    ) => {
+        funcParam: Record<string, ContractParam> = {},
+        asyncFlag: number = 0
+    ): Promise<ContractResult> => {
         const { Result } = await client.InvokeChainMakerDemoContract({
             ClusterId: TBAAS_CLUSTER_ID!,
             ChainId: TBAAS_CHAIN_ID!,
             ContractName: contractName,
             FuncName: funcName,
-            FuncParam: JSON.stringify(funcParam),
+            FuncParam: JSON.stringify(toParams(funcParam)),
             AsyncFlag: asyncFlag
         });
 
         return parseResult(Result);
     }
 );
-
-export async function invokeContract(
-    contractName: ContractName,
-    funcName: string,
-    funcParam: Record<string, string> = {},
-    asyncFlag = 0
-): Promise<ContractResult> {
-    return invokeThrottled(contractName, funcName, funcParam, asyncFlag);
-}
 
 export const hash = (value: string) => keccak256(toUtf8Bytes(value));
