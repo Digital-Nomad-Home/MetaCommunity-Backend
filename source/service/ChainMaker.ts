@@ -79,9 +79,8 @@ function parseResult(result?: RawContractResult): ContractResult {
     };
 }
 
-function toParams(params: Record<string, ContractParam>): Record<string, string> {
-    return Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
-}
+const stringifyValues = (params: Record<string, ContractParam>): Record<string, string> =>
+    Object.fromEntries(Object.entries(params).map(([key, value]) => [key, String(value)]));
 
 // TBaaS demo API limits to 1 request per second !!!
 const throttle = pThrottle({ limit: 1, interval: 1500, strict: true });
@@ -98,7 +97,7 @@ export const invokeContract = throttle(
             ChainId: TBAAS_CHAIN_ID!,
             ContractName: contractName,
             FuncName: funcName,
-            FuncParam: JSON.stringify(toParams(funcParam)),
+            FuncParam: JSON.stringify(stringifyValues(funcParam)),
             AsyncFlag: asyncFlag
         });
 
