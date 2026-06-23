@@ -21,7 +21,12 @@ export const {
     AWS_S3_BUCKET,
     AWS_S3_ACCESS_KEY_ID,
     AWS_S3_SECRET_ACCESS_KEY,
-    AWS_S3_PUBLIC_HOST
+    AWS_S3_PUBLIC_HOST,
+    TENCENT_SECRET_ID,
+    TENCENT_SECRET_KEY,
+    TBAAS_CLUSTER_ID,
+    TBAAS_CHAIN_ID,
+    PLATFORM_ADMIN
 } = process.env;
 
 export type NoEmptyFields<T> = {
